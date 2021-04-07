@@ -1,18 +1,34 @@
 <template>
   <div class="root">
-    <div v-if='showAll'>
-      <div id="crypto-container" v-for="(value) in cryptos">
-        <span class="left">{{ value.name }}</span>
-        <span class="right">${{ value.id }}</span>
+
+    <div v-if="!cryptos.length">
+      <div id="crypto-container">
+        <span class="left">{{ coinInfo.name }}</span>
+        <span class="right">{{ coinInfo.id }}</span>
       </div>
     </div>
-    <div id="button-container">
-      <button v-on:click="showAll = !showAll"> Show All Coins </button>
+
+    <div>
+      <div id="crypto-container" v-for="value in cryptos">
+        <span class="left">{{ value.name }}</span>
+        <span class="right">{{ value.id }}</span>
+      </div>
     </div>
+
+    <div id="showall">
+      <button v-on:click.prevent="displayCoins"> Show All Coins </button>
+    </div>
+
+    <form>
+      <input v-model="coin" placeholder="Please enter coin id">
+      <button @click.prevent="searchCoin">Get values</button>
+    </form>
+
     <footer>
       <p id="copyright">Copyright 2021 Nate Andrews</p>
       <p id="api">Powered by the CoinGecko API</p>
     </footer>
+    
   </div>
 </template>
 
@@ -24,18 +40,32 @@ export default {
   data: () => ({
     showAll: false,
     cryptos: [],
-    errors: []
+    errors: [],
+    coin: '',
+    coinInfo: [],
   }),
 
-  created () {
-    axios.get('https://api.coingecko.com/api/v3/coins/list')
+  methods: {
+    searchCoin: function () {
+      //console.log(event)
+      //console.log(this.coin);
+      axios.get('https://api.coingecko.com/api/v3/coins/bitcoin')
+      .then(response => {
+        this.coinInfo = response.data
+        //console.log(this.cryptos.name)
+      })
+    },
+
+    displayCoins: function() {
+      axios.get('https://api.coingecko.com/api/v3/coins/list')
       .then(response => {
         this.cryptos = response.data
-        console.log(response) // This will give you access to the full object
+        console.log(response)
       })
       .catch(e => {
         this.errors.push(e)
       })
+    }
   }
 }
 </script>
@@ -54,7 +84,7 @@ export default {
     box-shadow: 1px 1px 0 lightgrey;
   }
 
-  div#button-container { 
+  div#showall { 
     display: grid;    
   }
 /* c. Must have 2+ different class selectors. DONE */
