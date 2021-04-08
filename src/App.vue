@@ -1,28 +1,31 @@
 <template>
   <div class="root">
 
-    <div v-if="!cryptos.length">
-      <div id="crypto-container">
-        <span class="left">{{ coinInfo.name }}</span>
-        <span class="right">{{ coinInfo.id }}</span>
+      <div id="showall">
+        <button v-on:click.prevent="displayCoins"> Show All Coins </button>
       </div>
-    </div>
+      <form>
+        <input v-model="coin" placeholder="Please enter coin id">
+        <button @click.prevent="searchCoin(); cryptos=null;">Get values</button>
+      </form>
 
-    <div>
+    <div v-if="cryptos">
       <div id="crypto-container" v-for="value in cryptos">
         <span class="left">{{ value.name }}</span>
         <span class="right">{{ value.id }}</span>
       </div>
     </div>
 
-    <div id="showall">
-      <button v-on:click.prevent="displayCoins"> Show All Coins </button>
+    <div v-if="coinInfo">
+      <div id="crypto-container">
+        <span class="left">Name: {{ coinInfo.name }}</span>
+        <span class="right">ID: {{ coinInfo.id }}</span>
+        <button v-on:click="moreinfo = true">more</button>
+        <div v-if="moreinfo">
+          <span class="right">Price ($): {{ coinInfo.market_data.current_price.usd }}</span>
+        </div>
+      </div>
     </div>
-
-    <form>
-      <input v-model="coin" placeholder="Please enter coin id">
-      <button @click.prevent="searchCoin">Get values</button>
-    </form>
 
     <footer>
       <p id="copyright">Copyright 2021 Nate Andrews</p>
@@ -39,10 +42,11 @@ export default {
   name: 'root',
   data: () => ({
     showAll: false,
-    cryptos: [],
+    cryptos: null,
     errors: [],
     coin: '',
-    coinInfo: [],
+    coinInfo: null,
+    moreinfo: false,
   }),
 
   methods: {
@@ -80,7 +84,7 @@ export default {
     background:white;
     width: 70%;
     margin: 0 auto 4px auto;
-    padding: 1em;
+    padding: 10px;
     box-shadow: 1px 1px 0 lightgrey;
   }
 
@@ -106,6 +110,15 @@ export default {
     position: fixed;
     left: 0;
     bottom: 0;
+    width: 100%;
+    background-color: silver;
+    color: white;
+  }
+
+  header {
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 100%;
     background-color: silver;
     color: white;
