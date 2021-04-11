@@ -6,7 +6,7 @@
       </div>
       <form>
         <input v-model="coin" placeholder="Please enter coin id">
-        <button @click.prevent="searchCoin(); cryptos=null;">Get values</button>
+        <button @click.prevent="searchCoin(coin); cryptos=null;">Get values</button>
       </form>
 
     <div v-if="cryptos">
@@ -20,7 +20,8 @@
       <div id="crypto-container">
         <span class="left">Name: {{ coinInfo.name }}</span>
         <span class="right">ID: {{ coinInfo.id }}</span>
-        <button v-on:click="moreinfo = true">more</button>
+        <button v-if="!moreinfo" v-on:click="moreinfo = true">more</button>
+        <button v-if="moreinfo" v-on:click="moreinfo = false">less</button>
         <div v-if="moreinfo">
           <span class="right">Price ($): {{ coinInfo.market_data.current_price.usd }}</span>
         </div>
@@ -50,13 +51,10 @@ export default {
   }),
 
   methods: {
-    searchCoin: function () {
-      //console.log(event)
-      //console.log(this.coin);
-      axios.get('https://api.coingecko.com/api/v3/coins/bitcoin')
+    searchCoin: function (coin) {
+      axios.get(`https://api.coingecko.com/api/v3/coins/${coin}`)
       .then(response => {
         this.coinInfo = response.data
-        //console.log(this.cryptos.name)
       })
     },
 
@@ -135,6 +133,11 @@ export default {
     font-size: 25px;  
     margin: auto;  
   }
+
+  div button:hover {
+    opacity: 50%;
+  }
+
 /* b. Must use at least 10 unique adjacent selectors. */
   footer + p {
     text-align: left;
@@ -148,4 +151,11 @@ export default {
     display: flex; 
     justify-content: center;
   }
+
+  span + button {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+  }
+
 </style>
