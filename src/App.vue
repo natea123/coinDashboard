@@ -31,13 +31,20 @@
     <footer>
       <p id="copyright">Copyright 2021 Nate Andrews</p>
       <p id="api">Powered by the CoinGecko API</p>
+      <form id="sub">
+        <input v-model="fname" placeholder="First Name">
+        <input v-model="lname" placeholder="Last Name">
+        <input v-model="email" placeholder="Email">
+         <button @click.prevent="alertUser(fname, lname, email)">Subscribe</button>
+      </form>
     </footer>
     
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import UserInfo from "./main";
 
 export default {
   name: 'root',
@@ -48,6 +55,10 @@ export default {
     coin: '',
     coinInfo: null,
     moreinfo: false,
+    fname: '',
+    lname: '',
+    email: '',
+
   }),
 
   methods: {
@@ -67,8 +78,17 @@ export default {
       .catch(e => {
         this.errors.push(e)
       })
+    },
+    
+    // Must have at least one functional and in-use ES6 class in your active codebase.
+    alertUser: function(fname, lname, email) {
+      const user = new UserInfo(fname, lname, email);
+      user.confirmation();
+      this.fname = ''
+      this.lname = ''
+      this.email = ''
     }
-  }
+  },
 }
 </script>
 
@@ -157,5 +177,9 @@ export default {
     justify-content: center;
     font-size: 15px;
   }
+
+  /* Must have 5 or more pseudo element selector */
+
+  /* Must have 5 or more pseudo class selector */
 
 </style>

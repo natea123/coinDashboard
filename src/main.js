@@ -11,3 +11,17 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+export default class UserInfo {
+  constructor(fName, lName, email) {
+      this.fName = fName;
+      this.lName = lName;
+      this.email = email;
+  }
+
+  confirmation() {
+    alert(`Thanks ${this.fName} ${this.lName}! You will now receive crypto updates to ${this.email}`)
+  }
+
+
+}
