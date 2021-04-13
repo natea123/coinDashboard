@@ -29,8 +29,15 @@
     </div>
 
     <footer>
-      <p id="copyright">Copyright 2021 Nate Andrews</p>
-      <p id="api">Powered by the CoinGecko API</p>
+      <p id="copyright" @mouseover="expandInfo()">Copyright 2021 Nate Andrews</p>
+      <p id="copyright" v-show="links">
+        <a href="https://www.linkedin.com/in/nandrews94/">LinkedIn</a>
+        <a href="https://github.com/natea123">GitHub</a>
+      </p>
+      <p id="api" @mouseover="expandInfo()">Powered by the CoinGecko API</p>
+      <p id="api" v-show="links">
+        <a href="https://www.coingecko.com/en/api">API ref</a>
+      </p>
       <form id="sub">
         <input v-model="fname" placeholder="First Name">
         <input v-model="lname" placeholder="Last Name">
@@ -45,7 +52,6 @@
 <script>
 import axios from 'axios';
 import UserInfo from "./main";
-
 export default {
   name: 'root',
   data: () => ({
@@ -55,13 +61,14 @@ export default {
     coin: '',
     coinInfo: null,
     moreinfo: false,
+    links: false,
     fname: '',
     lname: '',
     email: '',
-
   }),
-
   methods: {
+
+    // makes call to coingecko and returns specified coin
     searchCoin: function (coin) {
       axios.get(`https://api.coingecko.com/api/v3/coins/${coin}`)
       .then(response => {
@@ -69,6 +76,7 @@ export default {
       })
     },
 
+    // makes call to coingecko and returns all coins
     displayCoins: function() {
       axios.get('https://api.coingecko.com/api/v3/coins/list')
       .then(response => {
@@ -87,6 +95,11 @@ export default {
       this.fname = ''
       this.lname = ''
       this.email = ''
+    },
+
+    // Toggles visibility of links in footer element
+    expandInfo: function() {
+      this.links = !this.links;
     }
   },
 }
@@ -105,7 +118,6 @@ export default {
     padding: 10px;
     box-shadow: 1px 1px 0 lightgrey;
   }
-
   div#showall { 
     display: grid;    
   }
@@ -113,17 +125,14 @@ export default {
   span.left {
     font-weight: bold;
   }
-
   span.right {
     float:right;
   }
-
 /* a. Must use at least 10 descendent selectors. */
   div span {
   -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
 }
-
   div footer {
     position: fixed;
     left: 0;
@@ -132,7 +141,6 @@ export default {
     background-color: silver;
     color: white;
   }
-
   header {
     position: fixed;
     left: 0;
@@ -141,11 +149,9 @@ export default {
     background-color: silver;
     color: white;
   }
-
   footer p {
     font-weight: bold;
   }
-
   div button {
     font-weight: bold;
     background-color: lightblue;  
@@ -154,32 +160,27 @@ export default {
     margin: auto;  
   }
 
-  div button:hover {
-    opacity: 50%;
-  }
-
 /* b. Must use at least 10 unique adjacent selectors. */
   footer + p {
     text-align: left;
-  }
-
-  p + p {
-    text-align: right;
   }
 
   div + button {
     display: flex; 
     justify-content: center;
   }
-
   span + button {
     display: flex;
     justify-content: center;
     font-size: 15px;
   }
 
+  
+
+  
   /* Must have 5 or more pseudo element selector */
-
   /* Must have 5 or more pseudo class selector */
-
+  button:hover {
+    opacity: 50%;
+  }
 </style>
