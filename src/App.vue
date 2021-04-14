@@ -1,8 +1,14 @@
 <template>
   <div class="root">
 
+    <header> 
+
+      Home
+
+    </header>
+
       <div id="showall">
-        <button v-on:click.prevent="displayCoins"> Show All Coins </button>
+        <button v-on:click.prevent="displayCoins" id="showall"> Show All Coins </button>
       </div>
       <form>
         <input v-model="coin" placeholder="Please enter coin id">
@@ -32,12 +38,13 @@
       <p id="copyright" @mouseover="expandInfo()">Copyright 2021 Nate Andrews</p>
       <p id="copyright" v-show="links">
         <a href="https://www.linkedin.com/in/nandrews94/">LinkedIn</a>
-        <a href="https://github.com/natea123">GitHub</a>
+        <a href="https://github.com/natea123" id="github">GitHub</a>
       </p>
       <p id="api" @mouseover="expandInfo()">Powered by the CoinGecko API</p>
       <p id="api" v-show="links">
         <a href="https://www.coingecko.com/en/api">API ref</a>
       </p>
+
       <form id="sub">
         <input v-model="fname" placeholder="First Name">
         <input v-model="lname" placeholder="Last Name">
@@ -115,7 +122,7 @@ export default {
     background:white;
     width: 70%;
     margin: 0 auto 4px auto;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 1px 1px 0 lightgrey;
   }
   div#showall { 
@@ -123,7 +130,7 @@ export default {
   }
 /* c. Must have 2+ different class selectors. DONE */
   span.left {
-    font-weight: bold;
+    float: left;
   }
   span.right {
     float:right;
@@ -141,7 +148,7 @@ export default {
     background-color: silver;
     color: white;
   }
-  header {
+  div header {
     position: fixed;
     left: 0;
     top: 0;
@@ -151,6 +158,8 @@ export default {
   }
   footer p {
     font-weight: bold;
+    float: left;
+    margin: 10px;
   }
   div button {
     font-weight: bold;
@@ -160,10 +169,21 @@ export default {
     margin: auto;  
   }
 
-/* b. Must use at least 10 unique adjacent selectors. */
-  footer + p {
-    text-align: left;
+  form input {
+    margin: 5px;
   }
+
+  footer form {
+    float: right;
+    padding: 5px;
+  }
+
+  p a {
+    margin: 5px;
+  }
+
+
+/* b. Must use at least 10 unique adjacent selectors. */
 
   div + button {
     display: flex; 
@@ -179,8 +199,30 @@ export default {
 
   
   /* Must have 5 or more pseudo element selector */
-  /* Must have 5 or more pseudo class selector */
+
+  /* Must have 5 or more pseudo class selector DONE */
   button:hover {
     opacity: 50%;
+  }
+
+  /* unvisited link */
+  a:link {
+    color: palegreen;
+  }
+
+  /* visited link */
+  a:visited {
+    color: purple;
+  }
+
+  /* mouse over link */
+  a:hover {
+    color: darkorange;
+    font-size: 120%;
+  }
+
+  /* selected link */
+  a:active {
+    color: #0000FF;
   }
 </style>
