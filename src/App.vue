@@ -3,16 +3,16 @@
 
     <header> 
 
-      Home
+      Crypto Dashboard
 
     </header>
 
       <div id="showall">
-        <button v-on:click.prevent="displayCoins" id="showall"> Show All Coins </button>
+        <button v-on:click.prevent="displayCoins" id="showall"> Show All Tokens </button>
       </div>
-      <form>
-        <input v-model="coin" placeholder="Please enter coin id">
-        <button @click.prevent="searchCoin(coin); cryptos=null;">Get values</button>
+      <form id="search">
+        <input id="searchid" v-model="coin" placeholder="Please enter coin id">
+        <button @click.prevent="searchCoin(coin); cryptos=null;">Get Token</button>
       </form>
 
     <div v-if="cryptos">
@@ -30,6 +30,7 @@
         <button v-if="moreinfo" v-on:click="moreinfo = false">less</button>
         <div v-if="moreinfo">
           <span class="right">Price ($): {{ coinInfo.market_data.current_price.usd }}</span>
+          <span class="left">Project URL: {{ coinInfo.links.homepage[0] }}</span>
         </div>
       </div>
     </div>
@@ -81,6 +82,7 @@ export default {
       .then(response => {
         this.coinInfo = response.data
       })
+      this.coin = ''
     },
 
     // makes call to coingecko and returns all coins
@@ -126,7 +128,19 @@ export default {
     box-shadow: 1px 1px 0 lightgrey;
   }
   div#showall { 
-    display: grid;    
+    display: grid;
+    margin: 60px;    
+  }
+
+  input#searchid {
+    width: 5%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  form#search {
+    display: grid;
+    margin: 15px;
   }
 /* c. Must have 2+ different class selectors. DONE */
   span.left {
@@ -153,8 +167,11 @@ export default {
     left: 0;
     top: 0;
     width: 100%;
+    padding: 10px;
     background-color: silver;
     color: white;
+    text-align: center;
+    font-weight: bold;
   }
   footer p {
     font-weight: bold;
