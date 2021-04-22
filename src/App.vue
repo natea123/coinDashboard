@@ -1,6 +1,7 @@
 <template>
   <div class="root">
-
+     <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto">
     <header> 
 
       Crypto Dashboard
@@ -38,12 +39,12 @@
     <footer>
       <p id="copyright" @mouseover="expandInfo()">Copyright 2021 Nate Andrews</p>
       <p id="copyright" v-show="links">
-        <a href="https://www.linkedin.com/in/nandrews94/">LinkedIn</a>
-        <a href="https://github.com/natea123" id="github">GitHub</a>
+        <a href="https://www.linkedin.com/in/nandrews94/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/natea123" id="github" target="_blank">GitHub</a>
       </p>
       <p id="api" @mouseover="expandInfo()">Powered by the CoinGecko API</p>
       <p id="api" v-show="links">
-        <a href="https://www.coingecko.com/en/api">API ref</a>
+        <a href="https://www.coingecko.com/en/api" target="_blank">API ref</a>
       </p>
 
       <form id="sub">
@@ -65,7 +66,6 @@ export default {
   data: () => ({
     showAll: false,
     cryptos: null,
-    errors: [],
     coin: '',
     coinInfo: null,
     moreinfo: false,
@@ -78,12 +78,17 @@ export default {
 
     // makes call to coingecko and returns specified coin
     searchCoin: function (coin) {
+      if (coin === '') {
+        alert("Please enter a valid curreny id")
+      } else {
       axios.get(`https://api.coingecko.com/api/v3/coins/${coin}`)
       .then(response => {
         this.coinInfo = response.data
+      }).catch(error => {
+        alert(error.response.data.error);
       })
       this.coin = ''
-    },
+    }},
 
     // makes call to coingecko and returns all coins
     displayCoins: function() {
@@ -92,8 +97,8 @@ export default {
         this.cryptos = response.data
         console.log(response)
       })
-      .catch(e => {
-        this.errors.push(e)
+      .catch(error => {
+        alert(error.response.data.error);
       })
     },
     
@@ -114,22 +119,25 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
   body {
+    font-family: 'Roboto', sans-serif;
     background: #f1f1f1;
   }
-/* d. Must have at least 2 ID selectors. DONE */
+
   div#crypto-container {
-    background:white;
+    background: rgb(244, 233, 224);
     width: 70%;
     margin: 0 auto 4px auto;
     padding: 20px;
     box-shadow: 1px 1px 0 lightgrey;
+    font-weight: bold;
   }
   div#showall { 
     display: grid;
-    margin: 60px;    
+    margin: 80px;    
   }
 
   input#searchid {
@@ -142,14 +150,14 @@ export default {
     display: grid;
     margin: 15px;
   }
-/* c. Must have 2+ different class selectors. DONE */
+
   span.left {
     float: left;
   }
   span.right {
     float:right;
   }
-/* a. Must use at least 10 descendent selectors. */
+
   div span {
   -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
   box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
@@ -172,6 +180,7 @@ export default {
     color: white;
     text-align: center;
     font-weight: bold;
+    font-size: 40px;
   }
   footer p {
     font-weight: bold;
@@ -183,11 +192,12 @@ export default {
     background-color: lightblue;  
     color: black;  
     font-size: 25px;  
-    margin: auto;  
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
   }
 
   form input {
-    margin: 5px;
+    margin: 15px;
   }
 
   footer form {
@@ -199,12 +209,10 @@ export default {
     margin: 5px;
   }
 
-
-/* b. Must use at least 10 unique adjacent selectors. */
-
   div + button {
     display: flex; 
     justify-content: center;
+    font-size: 125%;
   }
   span + button {
     display: flex;
@@ -212,12 +220,7 @@ export default {
     font-size: 15px;
   }
 
-  
 
-  
-  /* Must have 5 or more pseudo element selector */
-
-  /* Must have 5 or more pseudo class selector DONE */
   button:hover {
     opacity: 50%;
   }
